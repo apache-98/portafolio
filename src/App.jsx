@@ -5,6 +5,7 @@ import laola from './assets/laola.jpg';
 import robot from './assets/robot.jpeg';
 import perfil from './assets/perfil.jpg';
 import { Menu, X } from "lucide-react"; // Iconos hamburguesa
+import Swal from 'sweetalert2'
 
 // Font Awesome Icons
 import {
@@ -61,32 +62,6 @@ export default function App() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const validateEmail = (email) => /\S+@\S+\.\S+/.test(email);
-  const validatePhone = (telefono) => /^[0-9]{7,15}$/.test(telefono);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    // Validaciones
-    if (!formData.nombre || !formData.email || !formData.telefono) {
-      setStatus({ type: "error", message: "Todos los campos son obligatorios" });
-      return;
-    }
-    if (!validateEmail(formData.email)) {
-      setStatus({ type: "error", message: "Correo electrónico inválido" });
-      return;
-    }
-    if (!validatePhone(formData.telefono)) {
-      setStatus({ type: "error", message: "Número de teléfono inválido" });
-      return;
-    }
-
-    // Simulación de envío
-    setTimeout(() => {
-      setStatus({ type: "success", message: "Formulario enviado correctamente 🎉" });
-      setFormData({ nombre: "", email: "", telefono: "", mensaje: "" });
-    }, 1000);
-  };
 
   const [activeSection, setActiveSection] = useState('about');
 
@@ -148,7 +123,7 @@ export default function App() {
           </div>
         )}
       </header>
-    
+
 
       <main>
         <section id="about" className=" py-20 mb-16 px-6 md:px-20">
@@ -373,7 +348,33 @@ export default function App() {
                   )}
                 </AnimatePresence>
 
-                <form onSubmit={handleSubmit} className="grid gap-4">
+                <form
+                  onSubmit={async (e) => {
+                    e.preventDefault(); // Evita la recarga/redirección
+
+                    const res = await fetch("https://formspree.io/f/manbawkr", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify(formData),
+                    });
+
+                    if (res.ok) {
+                      Swal.fire({
+                        icon: "success",
+                        title: "Muy Bien",
+                        text: "Mensaje enviado con exito"
+                      });
+                      setFormData({ nombre: "", email: "", telefono: "", mensaje: "" }); // Limpia campos
+                    } else {
+                      Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Mensaje no enviado"
+                      });
+                    }
+                  }}
+                  className="grid gap-6 max-w-xl mx-auto md:mx-0"
+                >
                   <input
                     type="text"
                     name="nombre"
