@@ -6,6 +6,7 @@ import robot from './assets/robot.jpeg';
 import perfil from './assets/perfil.jpg';
 import { Menu, X } from "lucide-react"; // Iconos hamburguesa
 import Swal from 'sweetalert2'
+import hojadevida from './assets/hojadevida.pdf';
 
 // Font Awesome Icons
 import {
@@ -56,7 +57,7 @@ export default function App() {
     telefono: "",
     mensaje: "",
   });
-  const [status, setStatus] = useState({ type: "", message: "" });
+
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -154,7 +155,7 @@ export default function App() {
               <div className="flex flex-wrap justify-center items-center gap-4 mt-8">
                 {/* Descargar CV */}
                 <a
-                  href="/WilliamCV.pdf"
+                  href={hojadevida}
                   download
                   className="flex items-center gap-2 py-2.5 px-5 text-sm font-medium text-white bg-[#10B981] rounded-lg hover:bg-[#0e9e6f] transition"
                 >
@@ -325,7 +326,7 @@ export default function App() {
                   <a href="https://wa.me/573112456846" target="_blank" rel="noopener noreferrer" className="text-white hover:text-[#10B981]">
                     <FaWhatsapp size={28} />
                   </a>
-                  <a href="/CV_William.pdf" download className="text-white hover:text-[#10B981]">
+                  <a href={hojadevida} download className="text-white hover:text-[#10B981]">
                     <FaDownload size={28} />
                   </a>
                 </div>
